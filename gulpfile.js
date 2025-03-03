@@ -9,8 +9,8 @@ const babel = require('gulp-babel')
 const autoprefixer = require('gulp-autoprefixer')
 const connect = require('gulp-connect')
 const pug = require('gulp-pug')
-const sass = require('gulp-sass')
-sass.compiler = require('node-sass')
+const sass = require('gulp-sass')(require('sass'))
+// sass.compiler = require('node-sass')
 
 const config = require('./config.json')
 
@@ -57,7 +57,13 @@ gulp.task('assets', function () {
 		.pipe(gulp.dest('./dist/assets'));
 })
 
-gulp.task('build', gulp.series('clean', 'assets', 'pug', 'css', 'js', 'html'))
+gulp.task('copy-blog', function () {
+	return gulp
+		.src('./blog/public/**/*') // Hexo 生成的静态文件
+		.pipe(gulp.dest('./dist/blog')); // 目标路径
+});
+
+gulp.task('build', gulp.series('clean', 'assets', 'pug', 'css', 'js', 'html', 'copy-blog'))
 gulp.task('default', gulp.series('build'))
 
 gulp.task('watch', function () {

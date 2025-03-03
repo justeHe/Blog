@@ -1,19 +1,19 @@
 {
 	"head": {
-		"title": "一个坏掉的番茄",
-		"description": "Author:SimonMa,Category:Personal Blog",
+		"title": "Juste's Website",
+		"description": "Author:Juste,Category:Personal Blog",
 		"favicon": "favicon.ico"
 	},
 	"intro": {
-		"title": "Simon Ma",
-		"subtitle": "Front back left right end engineer",
+		"title": "Juste",
+		"subtitle": "Doing somgthing for fun",
 		"enter": "enter",
 		"supportAuthor": true,
 		"background": true
 	},
 	"main": {
-		"name": "Simon Ma",
-		"signature": "Code & Input & Output",
+		"name": "Juste",
+		"signature": "Nothing right, Nothing wrong",
 		"avatar": {
 			"link": "assets/avatar.jpg",
 			"height": "100",
@@ -36,7 +36,7 @@
 				"text": "Email"
 			},
 			"fourth": {
-				"href": "https://github.com/tomotoes",
+				"href": "https://github.com/justeHe",
 				"icon": "github",
 				"text": "Github"
 			}
