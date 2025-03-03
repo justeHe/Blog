@@ -2,7 +2,7 @@
 	"head": {
 		"title": "Juste's Website",
 		"description": "Author:Juste,Category:Personal Blog",
-		"favicon": "favicon.ico"
+		"favicon": "/blog/img/icon.png"
 	},
 	"intro": {
 		"title": "Juste",
@@ -31,7 +31,7 @@
 				"text": "About"
 			},
 			"third": {
-				"href": "mailto:simon@tomotoes.com",
+				"href": "Juste: justebe@163.com",
 				"icon": "email",
 				"text": "Email"
 			},
