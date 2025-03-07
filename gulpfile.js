@@ -60,10 +60,11 @@ gulp.task('assets', function () {
 gulp.task('copy-blog', function () {
 	return gulp
 		.src('./blog/public/**/*') // Hexo 生成的静态文件
-		.pipe(gulp.dest('./dist/blog')); // 目标路径
+		.pipe(gulp.dest('./dist/blog/')); // 目标路径
 });
 
-gulp.task('build', gulp.series('clean', 'assets', 'pug', 'css', 'js', 'html', 'copy-blog'))
+
+gulp.task('build', gulp.series('clean', 'assets', 'pug', 'css', 'js', 'html', 'copy-blog'));
 gulp.task('default', gulp.series('build'))
 
 gulp.task('watch', function () {
