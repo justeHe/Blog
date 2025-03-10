@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>test1</title>
-    <url>/blog/en/2025/03/06/test1/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <title>Juste&#39;s Website Building Log (1)</title>
+    <url>/blog/en/2025/03/10/blog_log_1/</url>
+    <content><![CDATA[<h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>Three years ago, after learning the front-end trio (HTML, CSS, JavaScript), I always wanted to build a personal blog. However, due to a lack of time, this project was indefinitely postponed. Recently, while browsing GitHub, I came across some interesting front-end themes, which reignited my blog plan. This blog is primarily built using the <a href="https://github.com/jerryc127/hexo-theme-butterfly">butterfly</a> template. Below, I will share the tools and resource sites used in building this blog.</p>
+<h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><p>The <a href="https://cloud.tencent.com/act/campus?fromSource=gwzcw.7502004.7502004.7502004&utm_medium=cpc&utm_id=gwzcw.7502004.7502004.7502004&bd_vid=11264964216929139476">server</a> is a student discount from Tencent Cloud, which is quite affordable and can be renewed for three years, making it sufficient for building a personal blog. However, domain registration can be a bit troublesome. If you don’t want a server, you can use GitHub’s GitHub Pages as a server, but the downside is that it can only be used for static pages, which is sufficient for a personal blog. For panel management, I used Baota, which is a conventional choice.</p>
+<h2 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h2><h3 id="Homepage"><a href="#Homepage" class="headerlink" title="Homepage"></a>Homepage</h3><p>The homepage uses a <a href="https://github.com/PavelDoGreat/WebGL-Fluid-Simulation">fluid simulation</a> effect, <a href="https://paveldogreat.github.io/WebGL-Fluid-Simulation/">try it out</a><br><img src="https://juste.com.cn/blog/en/Images/fluid_simulation.png" alt="fluid_simulation.png"></p>
+<h3 id="Blog-Interface"><a href="#Blog-Interface" class="headerlink" title="Blog Interface"></a>Blog Interface</h3><p>The main body of the blog is created using <a href="https://butterfly.js.org/">hexo butterfly</a>.</p>
+<h2 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h2><p>Comments are implemented by deploying <a href="https://github.com/ArtalkJS/Artalk">artalk</a> on the server.</p>
+<h2 id="Resource-Sites"><a href="#Resource-Sites" class="headerlink" title="Resource Sites"></a>Resource Sites</h2><p>Anime Pictures: <a href="https://bz.zzzmh.cn/index">https://bz.zzzmh.cn/index</a></p>
+<p>Image Compression: <a href="https://saerasoft.com/caesium">https://saerasoft.com/caesium</a></p>
+<p>Icons: <a href="https://fontawesome.com/icons?from=io">https://fontawesome.com/icons?from=io</a></p>
+<p>Webtemplate: <a href="https://github.com/huangshiyu13/webtemplate">https://github.com/huangshiyu13/webtemplate</a></p>
 ]]></content>
+      <categories>
+        <category>Website Building</category>
+      </categories>
       <tags>
-        <tag>test</tag>
+        <tag>Website Building Log</tag>
       </tags>
   </entry>
 </search>

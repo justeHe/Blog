@@ -1,0 +1,19 @@
+- class_name: '<i class="fas fa-check-double" style="color: #FF6666;padding-right: 0.4rem"></i>网站'
+  class_desc: '<span style="font-style: italic;">五花马，千金裘，呼儿将出换美酒，与尔同销万古愁！</span>'
+  link_list:
+    - name: MYW
+      link: https://crazywong.com/
+      avatar: https://crazywong.com/img/avatar.png
+      descr: 今日事,今日畢
+    - name: Hexo
+      link: https://hexo.io/zh-tw/
+      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+      descr: 快速、簡單且強大的網誌框架
+    - name: Butterfly
+      link: https://github.com/jerryc127/hexo-theme-butterfly
+      avatar: https://fastly.jsdelivr.net/gh/jerryc127/CDN/img/butterfly-github-avatar.png
+      descr: '🦋 A Hexo Theme: Butterfly'
+    - name: 一个坏掉的番茄
+      link: https://tomotoes.com/
+      avatar: https://cdn.jsdelivr.net/gh/Tomotoes/images/blog/avatar.jpg
+      descr: Front back left right end engineer

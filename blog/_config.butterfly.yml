@@ -26,9 +26,11 @@ menu:
     标签: /tag/ || fas fa-tags
     分类: /categories/ || fas fa-folder-open
     图库: /Gallery/ || fas fa-images
+  友情链接: /link/ || fas fa-link
   语言||fas fa-language:
     English: /en/ || fas fa-e
     中文: / || fas fa-c
+    
 
 
 # --------------------------------------
@@ -1016,9 +1018,9 @@ instantpage: false
 # Lazyload
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
-  enable: false
+  enable: true
   # Specify the field to use lazyload (site or post)
-  field: site
+  field: post
   placeholder:
   blur: false
 
