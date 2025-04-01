@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Image Denoising (Generating Noisy Images) | Juste's Blog</title><meta name="author" content="Juste He"><meta name="copyright" content="Juste He"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="IntroductionRecently, while studying computer vision, I encountered various image denoising techniques. In this series, I will mainly introduce traditional image denoising methods. Before diving into">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Image Denoising (Generating Noisy Images)">
+<meta property="og:url" content="http://example.com/2025/03/13/image%20denoising/index.html">
+<meta property="og:site_name" content="Juste&#39;s Blog">
+<meta property="og:description" content="IntroductionRecently, while studying computer vision, I encountered various image denoising techniques. In this series, I will mainly introduce traditional image denoising methods. Before diving into">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/Images/10.png">
+<meta property="article:published_time" content="2025-03-12T16:13:31.000Z">
+<meta property="article:modified_time" content="2025-04-01T10:30:17.059Z">
+<meta property="article:author" content="Juste He">
+<meta property="article:tag" content="Image Processing, Practice, Theory, Python, Filters">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/Images/10.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Image Denoising (Generating Noisy Images)",
+  "url": "http://example.com/2025/03/13/image%20denoising/",
+  "image": "http://example.com/Images/10.png",
+  "datePublished": "2025-03-12T16:13:31.000Z",
+  "dateModified": "2025-04-01T10:30:17.059Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Juste He",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/blog/en/Images/icon.png"><link rel="canonical" href="http://example.com/2025/03/13/image%20denoising/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/blog/en/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/blog/en/',
+  algolia: undefined,
+  localSearch: {"path":"/blog/en/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Image Denoising (Generating Noisy Images)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/blog/en/Images/Avatar.jpeg" onerror="this.onerror=null;this.src='/blog/en/Images/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/blog/en/archives/"><div class="headline">Articles</div><div class="length-num">2</div></a><a href="/blog/en/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a><a href="/blog/en/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-home"></i><span> HomePage</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/blog/en/../../"><span> MainPage</span></a></li><li><a class="site-page child" href="/blog/en/"><span> BlogPage</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/blog/en/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> Messageboard</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-compass"></i><span> Pages</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/blog/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/blog/en/tag/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/blog/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/blog/en/Gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/blog/en/link/"><i class="fa-fw fas fa-link"></i><span> link</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/blog/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/blog/en/../"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/blog/en/Images/10.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/blog/en/"><span class="site-name">Juste's Blog</span></a><a class="nav-page-title" href="/blog/en/"><span class="site-name">Image Denoising (Generating Noisy Images)</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-home"></i><span> HomePage</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/blog/en/../../"><span> MainPage</span></a></li><li><a class="site-page child" href="/blog/en/"><span> BlogPage</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/blog/en/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> Messageboard</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-compass"></i><span> Pages</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/blog/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/blog/en/tag/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/blog/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/blog/en/Gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/blog/en/link/"><i class="fa-fw fas fa-link"></i><span> link</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/blog/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/blog/en/../"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Image Denoising (Generating Noisy Images)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-12T16:13:31.000Z" title="Created 2025-03-13 00:13:31">2025-03-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-04-01T10:30:17.059Z" title="Updated 2025-04-01 18:30:17">2025-04-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/blog/en/categories/Image-Denoising/">Image Denoising</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Recently, while studying computer vision, I encountered various image denoising techniques. In this series, I will mainly introduce traditional image denoising methods. Before diving into the denoising techniques, let’s first introduce some common noise types and evaluation metrics.</p>
+<h2 id="Introduction-to-Common-Noises-and-Example-Code"><a href="#Introduction-to-Common-Noises-and-Example-Code" class="headerlink" title="Introduction to Common Noises and Example Code"></a>Introduction to Common Noises and Example Code</h2><p>Before introducing the common noises, let’s start with our original image, which is also a classic image in the field of computer vision:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/lena.jpg" alt="lena.jpg"></p>
+<h3 id="Gaussian-Noise"><a href="#Gaussian-Noise" class="headerlink" title="Gaussian Noise"></a>Gaussian Noise</h3><p>Gaussian noise is simply random noise that follows a Gaussian distribution, whose probability density function is given by<br>$$ P(x) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}} $$<br>where $\mu$ determines the mean of the noise and $\sigma^2$ determines the noise intensity. Note that Gaussian noise is generally assumed to be independently and identically distributed.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_gaussian_noise</span>(<span class="params">image, mean=<span class="number">0</span>, std=<span class="number">25</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    gauss = np.random.normal(mean, std, (row, col, ch))</span><br><span class="line">    gauss = gauss.reshape(row, col, ch)</span><br><span class="line">    noisy_image = image + gauss</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)  <span class="comment"># Ensure pixel values are in the range 0-255</span></span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+
+<p>Example:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/gaussian_image_sigma_20.jpg" alt="lena_gaussian.jpg"></p>
+<h3 id="Salt-and-Pepper-Noise"><a href="#Salt-and-Pepper-Noise" class="headerlink" title="Salt and Pepper Noise"></a>Salt and Pepper Noise</h3><p>Salt and pepper noise refers to noise where some pixels are randomly set to the maximum value (salt) or the minimum value (pepper), often used to simulate noise due to transmission errors or sensor dirt. Salt and pepper noise does not have an explicit probability density function; instead, the probability $p$ is used to control the occurrence of noisy pixels.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_salt_pepper_noise</span>(<span class="params">image, prob=<span class="number">0.05</span></span>):</span><br><span class="line">    noisy_image = np.copy(image)</span><br><span class="line">    h, w, c = noisy_image.shape</span><br><span class="line">    pepper = np.random.rand(h, w) &lt; prob</span><br><span class="line">    noisy_image[pepper] = <span class="number">0</span></span><br><span class="line">    salt = np.random.rand(h, w) &lt; prob</span><br><span class="line">    noisy_image[salt] = <span class="number">255</span></span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)  <span class="comment"># 确保像素值在 0-255 范围内</span></span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>Example:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/salt_pepper_image.jpg" alt="lena_gaussian.jpg"></p>
+<h3 id="Poisson-Noise"><a href="#Poisson-Noise" class="headerlink" title="Poisson Noise"></a>Poisson Noise</h3><p>Poisson noise, also known as “shot noise” or “granular noise”, is generated by the random arrival of photons in a photodetector, and its characteristics are related to the signal intensity. Poisson noise is signal-dependent and is commonly observed in low-light imaging. Its distribution follows the Poisson distribution: $P(k) &#x3D; \frac{\lambda^{k} e^{-\lambda}}{k!}$<br>where $\lambda$ is the original pixel value and $k$ is the noisy pixel value.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_poisson_noise</span>(<span class="params">image</span>):</span><br><span class="line">    vals = <span class="built_in">len</span>(np.unique(image))</span><br><span class="line">    vals = <span class="number">2</span> ** np.ceil(np.log2(vals))</span><br><span class="line">    noisy_image = np.random.poisson(image * vals) / <span class="built_in">float</span>(vals)</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>Example:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/poisson_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h3 id="Multiplicative-Noise"><a href="#Multiplicative-Noise" class="headerlink" title="Multiplicative Noise"></a>Multiplicative Noise</h3><p>Multiplicative noise is noise that is proportional to the signal intensity. A common model is:<br>$$ g(x, y) &#x3D; f(x, y) · \eta(x,y) \qquad \eta \sim U[a,b]$$<br> Of course, $\eta$ can also follow a Gaussian distribution with mean 0, which is the typical speckle noise.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_multiplicative_noise</span>(<span class="params">image, mean=<span class="number">0</span>, std=<span class="number">0.1</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    gauss = np.random.normal(mean, std, (row, col, ch))</span><br><span class="line">    gauss = gauss.reshape(row, col, ch)</span><br><span class="line">    noisy_image = image * gauss</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>Example:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/multiplicative_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h3 id="Uniform-Noise"><a href="#Uniform-Noise" class="headerlink" title="Uniform Noise"></a>Uniform Noise</h3><p>Uniform noise is an additive noise that follows a uniform distribution:<br>$$ g(x, y) &#x3D; f(x, y) + \eta(x,y) \qquad \eta \sim U[a,b]$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_uniform_noise</span>(<span class="params">image, low=-<span class="number">50</span>, high=<span class="number">50</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    uniform_noise = np.random.uniform(low, high, (row, col, ch))</span><br><span class="line">    noisy_image = image + uniform_noise</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>Example:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/uniform_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h3 id="周期噪声"><a href="#周期噪声" class="headerlink" title="周期噪声"></a>周期噪声</h3><p>Periodic noise is caused by electronic interference and manifests as a regular sinusoidal noise pattern:<br>$$ n(x, y) &#x3D; A · \sin(2\pi (ux + vy) + \phi) $$<br>where $A$ is the amplitude, $u$ and $v$ are the frequencies, and $\phi$ is the phase.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_periodic_noise</span>(<span class="params">image, frequency=<span class="number">50</span>, amplitude=<span class="number">50</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    x = np.arange(<span class="number">0</span>, col)</span><br><span class="line">    y = np.arange(<span class="number">0</span>, row)</span><br><span class="line">    X, Y = np.meshgrid(x, y)</span><br><span class="line">    <span class="comment"># 生成单通道噪声</span></span><br><span class="line">    noise = amplitude * np.sin(<span class="number">2</span> * np.pi * frequency * X / col)</span><br><span class="line">    <span class="comment"># 将噪声扩展到三通道</span></span><br><span class="line">    noise = np.stack([noise, noise, noise], axis=-<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 添加噪声到图像</span></span><br><span class="line">    noisy_image = image + noise</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)  <span class="comment"># 确保像素值在 0-255 范围内</span></span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>Example:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/periodic_image.jpg" alt="lena_gaussian.jpg"></p>
+<h3 id="Mixed-Noise"><a href="#Mixed-Noise" class="headerlink" title="Mixed Noise"></a>Mixed Noise</h3><p>Mixed noise is simply a combination of several common noise types.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_mixed_noise</span>(<span class="params">image</span>):</span><br><span class="line">    noisy_image = add_gaussian_noise(image, std=<span class="number">20</span>)</span><br><span class="line">    noisy_image = add_salt_pepper_noise(noisy_image)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>Example:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/en/Images/picture_denoising/mixed_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h2 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h2><h3 id="PSNR-Peak-Signal-to-Noise-Ratio"><a href="#PSNR-Peak-Signal-to-Noise-Ratio" class="headerlink" title="PSNR (Peak Signal-to-Noise Ratio)"></a><strong>PSNR (Peak Signal-to-Noise Ratio)</strong></h3><ul>
+<li><strong>Formula</strong>：<br>$$ \text{PSNR} &#x3D; 20 \log_{10}\left(\frac{255}{\sqrt{\text{MSE}}}\right) $$</li>
+<li><strong>Meaning</strong>：Quantifies pixel-level differences; a higher value (typically &gt;30dB) indicates better denoising performance.</li>
+<li><strong>Characteristics</strong>：Simple calculation, but not sensitive to human visual perception.</li>
+</ul>
+<h3 id="SSIM（结构相似性指数）"><a href="#SSIM（结构相似性指数）" class="headerlink" title="SSIM（结构相似性指数）"></a><strong>SSIM（结构相似性指数）</strong></h3><ul>
+<li><p><strong>Formula</strong>：<br>The product of three components: luminance ($\mu$), contrast ($\sigma$), and structure ($\sigma_{xy}$):<br>$$<br>\text{SSIM} &#x3D; \frac{(2\mu_x\mu_y + C_1)(2\sigma_{xy} + C_2)}{(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}<br>$$</p>
+<ul>
+<li>$\mu_x, \mu_y$: Mean of the images (luminance)</li>
+<li>$\sigma_x, \sigma_y$: Standard deviation (contrast)</li>
+<li>$\sigma_{xy}$: Covariance (structural similarity)</li>
+<li>$C_1&#x3D;(k_1L)^2, C_2&#x3D;(k_2L)^2$: Constants (with $L$ as the pixel range, typically $k_1&#x3D;0.01, k_2&#x3D;0.03$)</li>
+</ul>
+</li>
+<li><p><strong>Meaning</strong>：Ranges from [0,1]; closer to 1 indicates better structural preservation.</p>
+</li>
+<li><p><strong>Characteristics</strong>：Provides a comprehensive evaluation of texture, edge, and contrast preservation.</p>
+</li>
+</ul>
+<h3 id="MSE（Mean-Squared-Error）"><a href="#MSE（Mean-Squared-Error）" class="headerlink" title="MSE（Mean Squared Error）"></a><strong>MSE（Mean Squared Error）</strong></h3><ul>
+<li><strong>Formula</strong>：<br>$$ \text{MSE} &#x3D; \frac{1}{N}\sum (x_i - y_i)^2 $$</li>
+<li><strong>Meaning</strong>：Directly reflects the average pixel difference; lower values are better.</li>
+<li><strong>Characteristics</strong>：Ignores spatial structure and is sensitive to outliers.</li>
+</ul>
+<h3 id="EPI（Edge-Preservation-Index）"><a href="#EPI（Edge-Preservation-Index）" class="headerlink" title="EPI（Edge Preservation Index）"></a><strong>EPI（Edge Preservation Index）</strong></h3><ul>
+<li><strong>Formula</strong>：<br>$$ \text{EPI} &#x3D; \frac{\sum|\nabla\text{denoised} - \nabla\text{original}|}{\sum|\nabla\text{original}|} $$</li>
+<li><strong>Meaning</strong>：Evaluates the ability to preserve edges; lower values (ideally 0) indicate less detail loss.</li>
+<li><strong>Characteristics</strong>：Specifically used for detecting edge blurring, but sensitive to the type of noise.</li>
+</ul>
+<h3 id="LPIPS（Learned-Perceptual-Image-Patch-Similarity）"><a href="#LPIPS（Learned-Perceptual-Image-Patch-Similarity）" class="headerlink" title="LPIPS（Learned Perceptual Image Patch Similarity）"></a><strong>LPIPS（Learned Perceptual Image Patch Similarity）</strong></h3><ul>
+<li><strong>Principle</strong>：Based on the feature distance of a pre-trained VGG network.<br>$$ \text{LPIPS} &#x3D; |\phi(x) - \phi(y)|_2 $$</li>
+<li><strong>Meaning</strong>：Lower values indicate closer visual similarity, reflecting high-level semantic similarity.</li>
+<li><strong>Characteristics</strong>：Computationally complex, requires GPU, and depends on deep learning models.</li>
+</ul>
+<h3 id="指标对比"><a href="#指标对比" class="headerlink" title="指标对比"></a>指标对比</h3><table>
+<thead>
+<tr>
+<th>Metric Type</th>
+<th>Representative Metric</th>
+<th>Core Meaning</th>
+<th>Computational Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pixel Difference</td>
+<td>PSNR&#x2F;MSE</td>
+<td>Global pixel error</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Structural Similarity</td>
+<td>SSIM</td>
+<td>Texture&#x2F;edge preservation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Edge Preservation</td>
+<td>EPI</td>
+<td>Degree of detail loss</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Perceptual Quality</td>
+<td>LPIPS</td>
+<td>Visual similarity (human perception)</td>
+<td>High</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> lpips</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> skimage.metrics <span class="keyword">import</span> structural_similarity <span class="keyword">as</span> ssim</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">PSNR</span>(<span class="params">original, compressed</span>):</span><br><span class="line">    mse = np.mean((original - compressed) ** <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> mse == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">100</span></span><br><span class="line">    max_pixel = <span class="number">255.0</span></span><br><span class="line">    psnr = <span class="number">20</span> * np.log10(max_pixel / np.sqrt(mse))</span><br><span class="line">    <span class="keyword">return</span> psnr</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">SSIM</span>(<span class="params">original, denoised</span>):</span><br><span class="line">    <span class="comment"># 使用 `channel_axis` 参数替代已弃用的 `multichannel`</span></span><br><span class="line">    <span class="keyword">return</span> ssim(original, denoised, channel_axis=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">MSE</span>(<span class="params">original, compressed</span>):</span><br><span class="line">    mse = np.mean((original - compressed) ** <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> mse</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">EPI</span>(<span class="params">original, denoised</span>):</span><br><span class="line">    <span class="comment"># 将图像转换为灰度图</span></span><br><span class="line">    gray_original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    gray_denoised = cv2.cvtColor(denoised, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算 Sobel 梯度</span></span><br><span class="line">    sobel_original = cv2.Sobel(gray_original, cv2.CV_64F, <span class="number">1</span>, <span class="number">1</span>, ksize=<span class="number">3</span>)</span><br><span class="line">    sobel_denoised = cv2.Sobel(gray_denoised, cv2.CV_64F, <span class="number">1</span>, <span class="number">1</span>, ksize=<span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算 EPI</span></span><br><span class="line">    <span class="keyword">return</span> np.<span class="built_in">sum</span>(np.<span class="built_in">abs</span>(sobel_denoised - sobel_original)) / np.<span class="built_in">sum</span>(np.<span class="built_in">abs</span>(sobel_original))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 LPIPS 模型</span></span><br><span class="line">loss_fn = lpips.LPIPS(net=<span class="string">&#x27;vgg&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">LPIPS</span>(<span class="params">original, denoised</span>):</span><br><span class="line">    <span class="comment"># 将图像转换为 PyTorch 张量并归一化</span></span><br><span class="line">    original_torch = torch.from_numpy(original).permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>).unsqueeze(<span class="number">0</span>).<span class="built_in">float</span>() / <span class="number">255.0</span></span><br><span class="line">    denoised_torch = torch.from_numpy(denoised).permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>).unsqueeze(<span class="number">0</span>).<span class="built_in">float</span>() / <span class="number">255.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算 LPIPS</span></span><br><span class="line">    <span class="keyword">return</span> loss_fn(original_torch, denoised_torch).item()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">original, compressed</span>):</span><br><span class="line">    psnr = PSNR(original, compressed)</span><br><span class="line">    ssim_val = SSIM(original, compressed)  <span class="comment"># 避免与函数名冲突</span></span><br><span class="line">    mse = MSE(original, compressed)</span><br><span class="line">    epi = EPI(original, compressed)</span><br><span class="line">    lpips_val = LPIPS(original, compressed)  <span class="comment"># 避免与函数名冲突</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 打印结果</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;PSNR: <span class="subst">&#123;psnr&#125;</span>, SSIM: <span class="subst">&#123;ssim_val&#125;</span>, MSE: <span class="subst">&#123;mse&#125;</span>, EPI: <span class="subst">&#123;epi&#125;</span>, LPIPS: <span class="subst">&#123;lpips_val&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> psnr, ssim_val, mse, epi, lpips_val</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">Juste He</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/13/image%20denoising/">http://example.com/2025/03/13/image%20denoising/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/blog/en/tags/Image-Processing-Practice-Theory-Python-Filters/">Image Processing, Practice, Theory, Python, Filters</a></div><div class="post-share"><div class="social-share" data-image="/blog/en/Images/10.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width no-desc" href="/blog/en/2025/03/10/blog_log_1/" title="Juste's Website Building Log (1)"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/blog/en/Images/1.jpg" onerror="onerror=null;src='/blog/en/Images/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Juste's Website Building Log (1)</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div id="artalk-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/blog/en/Images/Avatar.jpeg" onerror="this.onerror=null;this.src='/blog/en/Images/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Juste He</div><div class="author-info-description"></div><div class="site-data"><a href="/blog/en/archives/"><div class="headline">Articles</div><div class="length-num">2</div></a><a href="/blog/en/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a><a href="/blog/en/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/justeHe"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/justeHe" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:justebe@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="/blog/en/Images/qq.png" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #FB7299;"></i></a><a class="social-icon" href="https://space.bilibili.com/1134653621?spm_id_from=333.1007.0.0" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #12B7F5;"></i></a><a class="social-icon" href="/blog/en/Images/wechat.png" target="_blank" title="WeChat"><i class="fab fa-weixin" style="color: #07C160;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome to Juste's website</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction-to-Common-Noises-and-Example-Code"><span class="toc-number">2.</span> <span class="toc-text">Introduction to Common Noises and Example Code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Gaussian-Noise"><span class="toc-number">2.1.</span> <span class="toc-text">Gaussian Noise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Salt-and-Pepper-Noise"><span class="toc-number">2.2.</span> <span class="toc-text">Salt and Pepper Noise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Poisson-Noise"><span class="toc-number">2.3.</span> <span class="toc-text">Poisson Noise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Multiplicative-Noise"><span class="toc-number">2.4.</span> <span class="toc-text">Multiplicative Noise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Uniform-Noise"><span class="toc-number">2.5.</span> <span class="toc-text">Uniform Noise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%A8%E6%9C%9F%E5%99%AA%E5%A3%B0"><span class="toc-number">2.6.</span> <span class="toc-text">周期噪声</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mixed-Noise"><span class="toc-number">2.7.</span> <span class="toc-text">Mixed Noise</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Metrics"><span class="toc-number">3.</span> <span class="toc-text">Metrics</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PSNR-Peak-Signal-to-Noise-Ratio"><span class="toc-number">3.1.</span> <span class="toc-text">PSNR (Peak Signal-to-Noise Ratio)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSIM%EF%BC%88%E7%BB%93%E6%9E%84%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%8C%87%E6%95%B0%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">SSIM（结构相似性指数）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MSE%EF%BC%88Mean-Squared-Error%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">MSE（Mean Squared Error）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EPI%EF%BC%88Edge-Preservation-Index%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">EPI（Edge Preservation Index）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LPIPS%EF%BC%88Learned-Perceptual-Image-Patch-Similarity%EF%BC%89"><span class="toc-number">3.5.</span> <span class="toc-text">LPIPS（Learned Perceptual Image Patch Similarity）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E5%AF%B9%E6%AF%94"><span class="toc-number">3.6.</span> <span class="toc-text">指标对比</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/blog/en/2025/03/13/image%20denoising/" title="Image Denoising (Generating Noisy Images)"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/blog/en/Images/10.png" onerror="this.onerror=null;this.src='/blog/en/Images/404.jpg'" alt="Image Denoising (Generating Noisy Images)"/></a><div class="content"><a class="title" href="/blog/en/2025/03/13/image%20denoising/" title="Image Denoising (Generating Noisy Images)">Image Denoising (Generating Noisy Images)</a><time datetime="2025-03-12T16:13:31.000Z" title="Created 2025-03-13 00:13:31">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/en/2025/03/10/blog_log_1/" title="Juste's Website Building Log (1)"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/blog/en/Images/1.jpg" onerror="this.onerror=null;this.src='/blog/en/Images/404.jpg'" alt="Juste's Website Building Log (1)"/></a><div class="content"><a class="title" href="/blog/en/2025/03/10/blog_log_1/" title="Juste's Website Building Log (1)">Juste's Website Building Log (1)</a><time datetime="2025-03-10T06:25:45.000Z" title="Created 2025-03-10 14:25:45">2025-03-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/blog/en/Images/10.png);"><div id="footer-wrap"><div class="copyright">&copy;2025 By Juste He</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text"><a href="icp鏈接"><img class="icp-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="icp圖片"><span>：xxxxxx</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional and Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/blog/en/js/utils.js"></script><script src="/blog/en/js/main.js"></script><script src="/blog/en/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'all',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  let artalkItem = null
+  const option = null
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+
+  const destroyArtalk = () => {
+    if (artalkItem) {
+      artalkItem.destroy()
+      artalkItem = null
+    }
+  }
+
+  const artalkChangeMode = theme => artalkItem && artalkItem.setDarkMode(theme === 'dark')
+
+  const initArtalk = (el = document, pageKey = location.pathname) => {
+    artalkItem = Artalk.init({
+      el: el.querySelector('#artalk-wrap'),
+      server: 'https://artalk.juste.com.cn',
+      site: 'Juste的博客',
+      darkMode: document.documentElement.getAttribute('data-theme') === 'dark',
+      ...option,
+      pageKey: isShuoshuo ? pageKey : (option && option.pageKey) || pageKey
+    })
+
+    if (GLOBAL_CONFIG.lightbox === 'null') return
+    artalkItem.on('list-loaded', () => {
+      artalkItem.ctx.get('list').getCommentNodes().forEach(comment => {
+        const $content = comment.getRender().$content
+        btf.loadLightbox($content.querySelectorAll('img:not([atk-emoticon])'))
+      })
+    })
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyArtalk = () => {
+        destroyArtalk()
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    btf.addGlobalFn('pjaxSendOnce', destroyArtalk, 'destroyArtalk')
+    btf.addGlobalFn('themeChange', artalkChangeMode, 'artalk')
+  }
+
+  const loadArtalk = async (el, pageKey) => {
+    if (typeof Artalk === 'object') initArtalk(el, pageKey)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/artalk/dist/Artalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/artalk/dist/Artalk.min.js')
+      initArtalk(el, pageKey)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Artalk' === 'Artalk'
+      ? window.shuoshuoComment = { loadComment: loadArtalk }
+      : window.loadOtherComment = loadArtalk
+    return
+  }
+
+  if ('Artalk' === 'Artalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('artalk-wrap'), loadArtalk)
+    else setTimeout(loadArtalk, 100)
+  } else {
+    window.loadOtherComment = loadArtalk
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/blog/en/js/search/local-search.js"></script></div></div></body></html>

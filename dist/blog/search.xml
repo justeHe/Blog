@@ -21,4 +21,106 @@
         <tag>建站日志</tag>
       </tags>
   </entry>
+  <entry>
+    <title>图像去噪(生成噪声图片)</title>
+    <url>/blog/2025/03/13/image%20denoising/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近学习计算机视觉时有接触到关于图像降噪的知识，接下来这个系列就主要用来介绍一下传统图像降噪的方式。在正式开始介绍降噪之前，我们先来介绍一下一些比较常见的加噪方式与指标。</p>
+<h2 id="常见噪声简介与示例代码"><a href="#常见噪声简介与示例代码" class="headerlink" title="常见噪声简介与示例代码"></a>常见噪声简介与示例代码</h2><p>在介绍常见的噪声之前，我们先引入我们的原图，也是计算机视觉领域比较经典的一张图,<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/lena.jpg" alt="lena.jpg"></p>
+<h3 id="高斯噪声"><a href="#高斯噪声" class="headerlink" title="高斯噪声"></a>高斯噪声</h3><p>高斯噪声简单理解就是服从高斯分布的随机噪声，其概率密度函数是 $P(x) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}} $<br>其中 $\mu$ 决定噪声的平均值， $\sigma^{2}$决定噪声强度，注意高斯噪声通常被认为是独立同分布的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add_gaussian_noise</span>(<span class="params">image, mean=<span class="number">0</span>, std=<span class="number">25</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    gauss = np.random.normal(mean, std, (row, col, ch))</span><br><span class="line">    gauss = gauss.reshape(row, col, ch)</span><br><span class="line">    noisy_image = image + gauss</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)  <span class="comment"># 确保像素值在 0-255 范围内</span></span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>示例:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/gaussian_image_sigma_20.jpg" alt="lena_gaussian.jpg"></p>
+<h3 id="椒盐噪声"><a href="#椒盐噪声" class="headerlink" title="椒盐噪声"></a>椒盐噪声</h3><p>椒盐噪声是指图像中部分像素随机地被设置为最大值（盐）或最小值（椒），常用于模拟传感器由于传输错误或脏污等原因产生的噪声。椒盐噪声不涉及明确的概率密度函数，而是通过概率 $p$ 来控制噪点出现的概率。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_salt_pepper_noise</span>(<span class="params">image, prob=<span class="number">0.05</span></span>):</span><br><span class="line">    noisy_image = np.copy(image)</span><br><span class="line">    h, w, c = noisy_image.shape</span><br><span class="line">    pepper = np.random.rand(h, w) &lt; prob</span><br><span class="line">    noisy_image[pepper] = <span class="number">0</span></span><br><span class="line">    salt = np.random.rand(h, w) &lt; prob</span><br><span class="line">    noisy_image[salt] = <span class="number">255</span></span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)  <span class="comment"># 确保像素值在 0-255 范围内</span></span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>示例:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/salt_pepper_image.jpg" alt="lena_gaussian.jpg"></p>
+<h3 id="泊松噪声"><a href="#泊松噪声" class="headerlink" title="泊松噪声"></a>泊松噪声</h3><p>泊松噪声又称为“散粒噪声”或“Shot Noise”，由光电探测器中光子的随机到达产生，其特性与信号强度有关。泊松噪声是一种信号相关噪声，常见于低光照条件下的成像。 其分布服从泊松分布$P(k) &#x3D; \frac{\lambda^{k} e^{-\lambda}}{k!}$<br>其中$\lambda$为原始像素值，$k$为噪声像素值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_poisson_noise</span>(<span class="params">image</span>):</span><br><span class="line">    vals = <span class="built_in">len</span>(np.unique(image))</span><br><span class="line">    vals = <span class="number">2</span> ** np.ceil(np.log2(vals))</span><br><span class="line">    noisy_image = np.random.poisson(image * vals) / <span class="built_in">float</span>(vals)</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>示例:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/poisson_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h3 id="乘性噪声"><a href="#乘性噪声" class="headerlink" title="乘性噪声"></a>乘性噪声</h3><p>乘性噪声是一种与信号强度成正比的噪声，常见模型如:<br>$$ g(x, y) &#x3D; f(x, y) · \eta(x,y) \qquad \eta \sim U[a,b]$$<br>当然$\eta$也可以服从均值为0的高斯分布，也就是我们常见的散斑分布</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_multiplicative_noise</span>(<span class="params">image, mean=<span class="number">0</span>, std=<span class="number">0.1</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    gauss = np.random.normal(mean, std, (row, col, ch))</span><br><span class="line">    gauss = gauss.reshape(row, col, ch)</span><br><span class="line">    noisy_image = image * gauss</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>示例:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/multiplicative_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h3 id="均匀噪声"><a href="#均匀噪声" class="headerlink" title="均匀噪声"></a>均匀噪声</h3><p>均匀噪声是一种加性噪声，服从均匀分布:<br>$$ g(x, y) &#x3D; f(x, y) + \eta(x,y) \qquad \eta \sim U[a,b]$$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_uniform_noise</span>(<span class="params">image, low=-<span class="number">50</span>, high=<span class="number">50</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    uniform_noise = np.random.uniform(low, high, (row, col, ch))</span><br><span class="line">    noisy_image = image + uniform_noise</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>示例:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/uniform_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h3 id="周期噪声"><a href="#周期噪声" class="headerlink" title="周期噪声"></a>周期噪声</h3><p>周期噪声由电子干扰引起，表现为规则的正弦模式噪声:<br>$$ n(x, y) &#x3D; A · \sin(2\pi (ux + vy) + \phi) $$<br>其中$A$是振幅，$u$,$v$为频率，$\phi$为相位。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_periodic_noise</span>(<span class="params">image, frequency=<span class="number">50</span>, amplitude=<span class="number">50</span></span>):</span><br><span class="line">    row, col, ch = image.shape</span><br><span class="line">    x = np.arange(<span class="number">0</span>, col)</span><br><span class="line">    y = np.arange(<span class="number">0</span>, row)</span><br><span class="line">    X, Y = np.meshgrid(x, y)</span><br><span class="line">    <span class="comment"># 生成单通道噪声</span></span><br><span class="line">    noise = amplitude * np.sin(<span class="number">2</span> * np.pi * frequency * X / col)</span><br><span class="line">    <span class="comment"># 将噪声扩展到三通道</span></span><br><span class="line">    noise = np.stack([noise, noise, noise], axis=-<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 添加噪声到图像</span></span><br><span class="line">    noisy_image = image + noise</span><br><span class="line">    noisy_image = np.clip(noisy_image, <span class="number">0</span>, <span class="number">255</span>)  <span class="comment"># 确保像素值在 0-255 范围内</span></span><br><span class="line">    noisy_image = noisy_image.astype(np.uint8)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>示例:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/periodic_image.jpg" alt="lena_gaussian.jpg"></p>
+<h3 id="混合噪声"><a href="#混合噪声" class="headerlink" title="混合噪声"></a>混合噪声</h3><p>混合噪声就是常见的几种噪声混合起来的形式，这里就不用多说了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_mixed_noise</span>(<span class="params">image</span>):</span><br><span class="line">    noisy_image = add_gaussian_noise(image, std=<span class="number">20</span>)</span><br><span class="line">    noisy_image = add_salt_pepper_noise(noisy_image)</span><br><span class="line">    <span class="keyword">return</span> noisy_image</span><br></pre></td></tr></table></figure>
+<p>示例:<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://juste.com.cn/blog/Images/picture_denoising/mixed_image.jpg" alt="lena_gaussian.jpg"> </p>
+<h2 id="指标"><a href="#指标" class="headerlink" title="指标"></a>指标</h2><h3 id="PSNR（峰值信噪比）"><a href="#PSNR（峰值信噪比）" class="headerlink" title="PSNR（峰值信噪比）"></a><strong>PSNR（峰值信噪比）</strong></h3><ul>
+<li><strong>公式</strong>：<br>$$ \text{PSNR} &#x3D; 20 \log_{10}\left(\frac{255}{\sqrt{\text{MSE}}}\right) $$</li>
+<li><strong>意义</strong>：量化像素级差异，值越高（通常&gt;30dB）表示去噪效果越好。</li>
+<li><strong>特点</strong>：计算简单，但对人眼感知不敏感。</li>
+</ul>
+<h3 id="SSIM（结构相似性指数）"><a href="#SSIM（结构相似性指数）" class="headerlink" title="SSIM（结构相似性指数）"></a><strong>SSIM（结构相似性指数）</strong></h3><ul>
+<li><p><strong>公式</strong>：<br>亮度（$\mu$）、对比度（$\sigma$）、结构（$\sigma_{xy}$）三部分相乘：<br>$$<br>\text{SSIM} &#x3D; \frac{(2\mu_x\mu_y + C_1)(2\sigma_{xy} + C_2)}{(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}<br>$$</p>
+<ul>
+<li>$\mu_x, \mu_y$：图像均值（亮度）  </li>
+<li>$\sigma_x, \sigma_y$：标准差（对比度）  </li>
+<li>$\sigma_{xy}$：协方差（结构相似性）  </li>
+<li>$C_1&#x3D;(k_1L)^2, C_2&#x3D;(k_2L)^2$：常数（$L$为像素范围，通常$k_1&#x3D;0.01, k_2&#x3D;0.03$）</li>
+</ul>
+</li>
+<li><p><strong>意义</strong>：值域 [0,1]，越接近 1 表示结构保留越好。</p>
+</li>
+<li><p><strong>特点</strong>：综合评估纹理、边缘和对比度的保持能力。</p>
+</li>
+</ul>
+<h3 id="MSE（均方误差）"><a href="#MSE（均方误差）" class="headerlink" title="MSE（均方误差）"></a><strong>MSE（均方误差）</strong></h3><ul>
+<li><strong>公式</strong>：<br>$$ \text{MSE} &#x3D; \frac{1}{N}\sum (x_i - y_i)^2 $$</li>
+<li><strong>意义</strong>：直接反映像素平均差异，值越小越好。</li>
+<li><strong>特点</strong>：忽略空间结构，对异常值敏感。</li>
+</ul>
+<h3 id="EPI（边缘保持指数）"><a href="#EPI（边缘保持指数）" class="headerlink" title="EPI（边缘保持指数）"></a><strong>EPI（边缘保持指数）</strong></h3><ul>
+<li><strong>公式</strong>：<br>$$ \text{EPI} &#x3D; \frac{\sum|\nabla\text{去噪} - \nabla\text{原图}|}{\sum|\nabla\text{原图}|} $$</li>
+<li><strong>意义</strong>：评估边缘保留能力，值越小（理想为0）表示细节损失少。</li>
+<li><strong>特点</strong>：专用于检测边缘模糊，但对噪声类型敏感。</li>
+</ul>
+<h3 id="LPIPS（感知相似度）"><a href="#LPIPS（感知相似度）" class="headerlink" title="LPIPS（感知相似度）"></a><strong>LPIPS（感知相似度）</strong></h3><ul>
+<li><strong>原理</strong>：基于预训练VGG网络的特征距离。<br>$$ \text{LPIPS} &#x3D; |\phi(x) - \phi(y)|_2 $$</li>
+<li><strong>意义</strong>：值越低表示视觉越接近，反映高阶语义相似性。</li>
+<li><strong>特点</strong>：计算复杂需GPU，依赖深度学习模型。</li>
+</ul>
+<h2 id="指标对比"><a href="#指标对比" class="headerlink" title="指标对比"></a>指标对比</h2><table>
+<thead>
+<tr>
+<th>指标类型</th>
+<th>代表指标</th>
+<th>核心意义</th>
+<th>计算复杂度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>像素差异</td>
+<td>PSNR&#x2F;MSE</td>
+<td>全局像素误差</td>
+<td>低</td>
+</tr>
+<tr>
+<td>结构相似性</td>
+<td>SSIM</td>
+<td>纹理&#x2F;边缘保留</td>
+<td>中</td>
+</tr>
+<tr>
+<td>边缘保留</td>
+<td>EPI</td>
+<td>细节破坏程度</td>
+<td>中</td>
+</tr>
+<tr>
+<td>感知质量</td>
+<td>LPIPS</td>
+<td>人眼视觉相似性</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> lpips</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> skimage.metrics <span class="keyword">import</span> structural_similarity <span class="keyword">as</span> ssim</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">PSNR</span>(<span class="params">original, compressed</span>):</span><br><span class="line">    mse = np.mean((original - compressed) ** <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> mse == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">100</span></span><br><span class="line">    max_pixel = <span class="number">255.0</span></span><br><span class="line">    psnr = <span class="number">20</span> * np.log10(max_pixel / np.sqrt(mse))</span><br><span class="line">    <span class="keyword">return</span> psnr</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">SSIM</span>(<span class="params">original, denoised</span>):</span><br><span class="line">    <span class="comment"># 使用 `channel_axis` 参数替代已弃用的 `multichannel`</span></span><br><span class="line">    <span class="keyword">return</span> ssim(original, denoised, channel_axis=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">MSE</span>(<span class="params">original, compressed</span>):</span><br><span class="line">    mse = np.mean((original - compressed) ** <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> mse</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">EPI</span>(<span class="params">original, denoised</span>):</span><br><span class="line">    <span class="comment"># 将图像转换为灰度图</span></span><br><span class="line">    gray_original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    gray_denoised = cv2.cvtColor(denoised, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算 Sobel 梯度</span></span><br><span class="line">    sobel_original = cv2.Sobel(gray_original, cv2.CV_64F, <span class="number">1</span>, <span class="number">1</span>, ksize=<span class="number">3</span>)</span><br><span class="line">    sobel_denoised = cv2.Sobel(gray_denoised, cv2.CV_64F, <span class="number">1</span>, <span class="number">1</span>, ksize=<span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算 EPI</span></span><br><span class="line">    <span class="keyword">return</span> np.<span class="built_in">sum</span>(np.<span class="built_in">abs</span>(sobel_denoised - sobel_original)) / np.<span class="built_in">sum</span>(np.<span class="built_in">abs</span>(sobel_original))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 LPIPS 模型</span></span><br><span class="line">loss_fn = lpips.LPIPS(net=<span class="string">&#x27;vgg&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">LPIPS</span>(<span class="params">original, denoised</span>):</span><br><span class="line">    <span class="comment"># 将图像转换为 PyTorch 张量并归一化</span></span><br><span class="line">    original_torch = torch.from_numpy(original).permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>).unsqueeze(<span class="number">0</span>).<span class="built_in">float</span>() / <span class="number">255.0</span></span><br><span class="line">    denoised_torch = torch.from_numpy(denoised).permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>).unsqueeze(<span class="number">0</span>).<span class="built_in">float</span>() / <span class="number">255.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算 LPIPS</span></span><br><span class="line">    <span class="keyword">return</span> loss_fn(original_torch, denoised_torch).item()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">original, compressed</span>):</span><br><span class="line">    psnr = PSNR(original, compressed)</span><br><span class="line">    ssim_val = SSIM(original, compressed)  <span class="comment"># 避免与函数名冲突</span></span><br><span class="line">    mse = MSE(original, compressed)</span><br><span class="line">    epi = EPI(original, compressed)</span><br><span class="line">    lpips_val = LPIPS(original, compressed)  <span class="comment"># 避免与函数名冲突</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 打印结果</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;PSNR: <span class="subst">&#123;psnr&#125;</span>, SSIM: <span class="subst">&#123;ssim_val&#125;</span>, MSE: <span class="subst">&#123;mse&#125;</span>, EPI: <span class="subst">&#123;epi&#125;</span>, LPIPS: <span class="subst">&#123;lpips_val&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> psnr, ssim_val, mse, epi, lpips_val</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>图像降噪</category>
+      </categories>
+      <tags>
+        <tag>图像处理，实践，理论，python，滤波器</tag>
+      </tags>
+  </entry>
 </search>
