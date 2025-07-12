@@ -805,7 +805,7 @@ preloader:
   # source
   # 1. fullpage-loading
   # 2. pace (progress bar)
-  source: 1
+  source: 2
   # pace theme (see https://codebyzach.github.io/pace/)
   pace_css_url: "https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css"
 
@@ -1017,9 +1017,9 @@ instantpage: false
 lazyload:
   enable: true
   # Specify the field to use lazyload (site or post)
-  field: post
-  placeholder:
-  blur: false
+  field: post, site
+  placeholder: 
+  blur: ture
 
 # PWA
 # See https://github.com/JLHwung/hexo-offline
