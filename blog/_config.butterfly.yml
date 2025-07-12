@@ -27,10 +27,6 @@ menu:
     分类: /categories/ || fas fa-folder-open
     图库: /Gallery/ || fas fa-images
   友情链接: /link/ || fas fa-link
-  语言||fas fa-language:
-    English: /en/ || fas fa-e
-    中文: / || fas fa-c
-    
 
 
 # --------------------------------------

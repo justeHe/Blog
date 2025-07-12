@@ -5,16 +5,22 @@
 # Site
 title: Juste's Blog
 subtitle: ''
-description: ''
+description: Welcome to Juste's Blog, a place where I share my thoughts and experiences.
 keywords:
+  - Hexo
+  - Juste
+  - Blog
+  - Juste's Blog
+  - Hexo Theme Butterfly
+  - Hexo Theme
+  - Hexo Theme Juste
 author: Juste He
-language: 
-  - zh_CN
+language: zh-CN
 timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: https://juste.com.cn
 root: /blog/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
