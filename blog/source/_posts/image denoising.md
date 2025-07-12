@@ -12,7 +12,7 @@ categories:
 
 ## 常见噪声简介与示例代码
 在介绍常见的噪声之前，我们先引入我们的原图，也是计算机视觉领域比较经典的一张图,
-![lena.jpg](https://juste.com.cn/blog/Images/picture_denoising/lena.jpg)
+![lena.jpg]((https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/lena.jpg)
 
 ### 高斯噪声
 高斯噪声简单理解就是服从高斯分布的随机噪声，其概率密度函数是 $P(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}} $
