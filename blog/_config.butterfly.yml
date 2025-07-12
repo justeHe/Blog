@@ -79,10 +79,11 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img: /blog/Images/coffee-time.png
+# index_img: /blog/Images/coffee-time.png
+index_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/coffee-time.png
 
 # The banner image of archive page
-archive_img: /blog/Images/1.jpg
+archive_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/1.jpg
 
 # Note: tag page, not tags page
 tag_img:
@@ -114,31 +115,31 @@ cover:
   archives_enable: true
   # When cover is not set, the default cover is displayed
   default_cover:
-    - /Images/1.jpg
-    - /Images/2.jpg
-    - /Images/3.jpg
-    - /Images/4.png
-    - /Images/5.png
-    - /Images/6.jpg
-    - /Images/7.jpg
-    - /Images/8.jpg
-    - /Images/9.png
-    - /Images/10.png
-    - /Images/12.jpg
-    - /Images/13.png
-    - /Images/14.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/1.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/2.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/3.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/4.png
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/5.png
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/6.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/7.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/8.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/9.png
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/10.png
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/12.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/13.png
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/14.jpg
 
 
 # Replace Broken Images
 error_img:
-  flink: /Images/friend_404.gif
-  post_page: /Images/404.jpg
+  flink: https://fa135av3.dev.cdn.imgeng.in/blog/Images/friend_404.gif
+  post_page: https://fa135av3.dev.cdn.imgeng.in/blog/Images/404.jpg
 
 # A simple 404 page
 error_404:
   enable: false
   subtitle: 'Page Not Found'
-  background: /Images/error-page.png
+  background: https://fa135av3.dev.cdn.imgeng.in/blog/Images/error-page.png
 
 
 post_meta:

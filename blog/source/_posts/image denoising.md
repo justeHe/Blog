@@ -29,7 +29,7 @@ def add_gaussian_noise(image, mean=0, std=25):
     return noisy_image
 ```
 示例:
-![lena_gaussian.jpg](https://juste.com.cn/blog/Images/picture_denoising/gaussian_image_sigma_20.jpg)
+![lena_gaussian.jpg](https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/gaussian_image_sigma_20.jpg)
 
 ### 椒盐噪声
 椒盐噪声是指图像中部分像素随机地被设置为最大值（盐）或最小值（椒），常用于模拟传感器由于传输错误或脏污等原因产生的噪声。椒盐噪声不涉及明确的概率密度函数，而是通过概率 $p$ 来控制噪点出现的概率。
@@ -46,7 +46,7 @@ def add_salt_pepper_noise(image, prob=0.05):
     return noisy_image
 ```
 示例:
-![lena_gaussian.jpg](https://juste.com.cn/blog/Images/picture_denoising/salt_pepper_image.jpg)
+![lena_gaussian.jpg](https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/salt_pepper_image.jpg)
 
 ### 泊松噪声
 泊松噪声又称为“散粒噪声”或“Shot Noise”，由光电探测器中光子的随机到达产生，其特性与信号强度有关。泊松噪声是一种信号相关噪声，常见于低光照条件下的成像。 其分布服从泊松分布$P(k) = \frac{\lambda^{k} e^{-\lambda}}{k!}$ 
@@ -61,7 +61,7 @@ def add_poisson_noise(image):
     return noisy_image
 ```
 示例:
-![lena_gaussian.jpg](https://juste.com.cn/blog/Images/picture_denoising/poisson_image.jpg) 
+![lena_gaussian.jpg](https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/poisson_image.jpg) 
 
 ### 乘性噪声
 乘性噪声是一种与信号强度成正比的噪声，常见模型如:
@@ -78,7 +78,7 @@ def add_multiplicative_noise(image, mean=0, std=0.1):
     return noisy_image
 ```
 示例:
-![lena_gaussian.jpg](https://juste.com.cn/blog/Images/picture_denoising/multiplicative_image.jpg) 
+![lena_gaussian.jpg](https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/multiplicative_image.jpg) 
 
 ### 均匀噪声
 均匀噪声是一种加性噪声，服从均匀分布:
@@ -93,7 +93,7 @@ def add_uniform_noise(image, low=-50, high=50):
     return noisy_image
 ```
 示例:
-![lena_gaussian.jpg](https://juste.com.cn/blog/Images/picture_denoising/uniform_image.jpg) 
+![lena_gaussian.jpg](https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/uniform_image.jpg) 
 
 ### 周期噪声
 周期噪声由电子干扰引起，表现为规则的正弦模式噪声:
@@ -116,7 +116,7 @@ def add_periodic_noise(image, frequency=50, amplitude=50):
     return noisy_image
 ```
 示例:
-![lena_gaussian.jpg](https://juste.com.cn/blog/Images/picture_denoising/periodic_image.jpg)
+![lena_gaussian.jpg](https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/periodic_image.jpg)
 
 ### 混合噪声
 混合噪声就是常见的几种噪声混合起来的形式，这里就不用多说了。
@@ -127,7 +127,7 @@ def add_mixed_noise(image):
     return noisy_image
 ```
 示例:
-![lena_gaussian.jpg](https://juste.com.cn/blog/Images/picture_denoising/mixed_image.jpg) 
+![lena_gaussian.jpg](https://fa135av3.dev.cdn.imgeng.in/blog/Images/picture_denoising/mixed_image.jpg) 
 
 ## 指标
 ### **PSNR（峰值信噪比）**

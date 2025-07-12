@@ -78,10 +78,10 @@ disable_top_img: false
 default_top_img:
 
 # The banner image of index page
-index_img: /blog/Images/coffee-time.png
+index_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/coffee-time.png
 
 # The banner image of archive page
-archive_img: /blog/Images/1.jpg
+archive_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/1.jpg
 
 # Note: tag page, not tags page
 tag_img:
