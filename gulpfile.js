@@ -15,7 +15,7 @@ const sass = require('gulp-sass')(require('sass'))
 const config = require('./config.json')
 
 gulp.task('clean', function () {
-	return del(['./dist/css/', './dist/js/'])
+	return del(['./dist/*'])
 })
 
 gulp.task('css', function () {

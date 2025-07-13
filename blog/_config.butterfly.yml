@@ -79,7 +79,7 @@ default_top_img:
 index_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/coffee-time.png
 
 # The banner image of archive page
-archive_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/1.jpg
+archive_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/1.webp
 
 # Note: tag page, not tags page
 tag_img:
@@ -111,19 +111,21 @@ cover:
   archives_enable: true
   # When cover is not set, the default cover is displayed
   default_cover:
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/1.jpg
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/2.jpg
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/3.jpg
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/4.png
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/5.png
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/6.jpg
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/7.jpg
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/8.jpg
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/9.png
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/10.png
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/12.jpg
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/13.png
-    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/14.jpg
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/1.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/2.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/3.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/4.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/5.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/6.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/7.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/8.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/9.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/10.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/11.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/12.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/13.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/14.webp
+    - https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/15.webp
 
 
 # Replace Broken Images
@@ -185,7 +187,7 @@ subtitle:
   # 1 - hitokoto.cn
   # 2 - yijuzhan.com
   # 3 - jinrishici.com
-  source: 2
+  source: 3
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
     - Life is boring, but also to live
@@ -199,7 +201,7 @@ subtitle:
 # 5: Info displayed on the cover
 # 6: Masonry layout - Cover on top, info on the bottom
 # 7: Masonry layout - Info displayed on the cover
-index_layout: 6
+index_layout: 4
 
 # Display the article introduction on homepage
 # 1: description
@@ -284,9 +286,9 @@ footer:
   owner:
     enable: true
     since: 2025
-  custom_text: <a href="icp鏈接"><img class="icp-icon" src="icp圖片"><span>：xxxxxx</span></a>
+  custom_text: 
   # Copyright of theme and framework
-  copyright: true
+  copyright: false
 
 # --------------------------------------
 # Aside Settings
