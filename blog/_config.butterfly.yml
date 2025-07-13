@@ -82,20 +82,24 @@ index_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/coffee-time.png
 archive_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/1.webp
 
 # Note: tag page, not tags page
-tag_img:
+tag_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/2.webp 
 
 # The banner image of tag page, you can set the banner image for each tag
 # Format:
 #  - tag name: xxxxx
-tag_per_img:
+tag_per_img: 
+  - 建站日志: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/3.webp
+  - 图像处理: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/4.webp
 
 # Note: category page, not categories page
-category_img:
+category_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/5.webp
 
 # The banner image of category page, you can set the banner image for each category
 # Format:
 #  - category name: xxxxx
 category_per_img:
+  - 建站: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/6.webp
+  - 图像降噪: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/7.webp
 
 # The background image of footer
 footer_img: true
