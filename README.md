@@ -116,6 +116,32 @@
 
 构建完成后，`/dist` 目录将包含所有可用于部署的静态文件。
 
+## 📚 资源分享
+
+本项目的搭建与优化过程中参考和使用了一些优秀的工具、服务和学习资源。以下是部分资源的汇总，希望能对你有所帮助。
+
+*   **服务器与部署**:
+    *   [腾讯云学生优惠](https://cloud.tencent.com/act/campus?fromSource=gwzcw.7502004.7502004.7502004&utm_medium=cpc&utm_id=gwzcw.7502004.7502004.7502004&bd_vid=11264964216929139476): 用于博客的服务器托管。
+    *   [Artalk](https://github.com/ArtalkJS/Artalk): 自部署的评论系统。
+
+*   **前端与设计**:
+    *   [WebGL Fluid Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation): 首页流体模拟特效。
+    *   [Pace.js](https://codebyzach.github.io/pace/): 页面加载动画。
+    *   [Font Awesome](https://fontawesome.com/icons?from=io): 图标库。
+    *   [前端模板集合](https://github.com/huangshiyu13/webtemplate): 各类网页模板。
+
+*   **图片优化**:
+    *   [Image Engine](https://control.imageengine.io/): 图片 CDN，提供免费额度。
+    *   [Caesium](https://saerasoft.com/caesium): 本地图片压缩工具。
+    *   [Convertio](https://convertio.co/zh/): 在线图片格式转换工具。
+    *   [二次元图库](https://bz.zzzmh.cn/index): 壁纸和图片资源。
+
+*   **技术学习**:
+    *   [响应式图片指南](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Guides/Responsive_images): MDN 的响应式图片教程。
+    *   [图片懒加载](https://github.com/amandakelake/blog/issues/46): 关于懒加载的讨论和实现。
+    *   [浏览器缓存策略](https://github.com/amandakelake/blog/issues/43): 关于浏览器缓存的深入介绍。
+    *   [CSS Sprites](https://www.w3schools.com/css/css_image_sprites.asp): W3Schools 的 CSS Sprites 教程。
+
 ## 📄 开源许可
 
 本项目基于 MIT 许可证开源。

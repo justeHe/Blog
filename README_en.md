@@ -30,7 +30,7 @@ This project contains a personal homepage and an integrated Hexo blog. The homep
 *   **Blog**:
     *   **Framework**: [Hexo](https://hexo.io/)
     *   **Theme**: [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)
-    *   **Comments**: [Artalk](https://artalk.js.org/) (self-hosted at `https://artalk.juste.com.cn`)
+    *   **Comments**: [Artalk](https://artalk.js.org/)
     *   **Math Rendering**: [MathJax](https://www.mathjax.org/)
     *   **Search**: `hexo-generator-searchdb` (Local Search)
 
@@ -70,7 +70,7 @@ This project contains a personal homepage and an integrated Hexo blog. The homep
 
 2.  **Install homepage dependencies:**
     ```bash
-    npm install
+    cnpm install
     ```
 
 3.  **Install blog dependencies:**
@@ -86,14 +86,15 @@ You can run the development servers for the homepage and the blog simultaneously
 *   **To develop the homepage:**
     Run the following command from the project root directory. This will start a local server at `http://localhost:8080` with live reload.
     ```bash
-    npm run dev
+    cnpm run dev
     ```
 
 *   **To develop the blog:**
     Navigate to the `blog` directory and start the Hexo server. The blog will run at `http://localhost:4000`.
     ```bash
     cd blog
-    npm run server
+    hexo c && hexo g
+    hexo s
     ```
 
 ## 📦 Building for Production
@@ -101,20 +102,47 @@ You can run the development servers for the homepage and the blog simultaneously
 The build process compiles and integrates all files from both the homepage and the blog into the `/dist` directory.
 
 1.  **Build the Hexo blog:**
-    First, generate the static files for the blog.
+    First, generate the static files for the blog and the static files are in the public folder.
     ```bash
     cd blog
-    npm run build
+    hexo c && hexo g
+    hexo s
     ```
 
 2.  **Build the entire project:**
     Return to the root directory and run the main build script. This command compiles the homepage assets and automatically copies the generated blog files into the `dist/blog` directory.
     ```bash
     cd ..
-    npm run build
+    cnpm run build
     ```
 
 After the build is complete, the `/dist` directory will contain all the static files ready for deployment.
+
+## 📚 Resource Sharing
+
+This project was built and optimized using several excellent tools, services, and learning resources. Here is a summary of some of them, which you might find helpful.
+
+*   **Server & Deployment**:
+    *   [Tencent Cloud Student Discount](https://cloud.tencent.com/act/campus?fromSource=gwzcw.7502004.7502004.7502004&utm_medium=cpc&utm_id=gwzcw.7502004.7502004.7502004&bd_vid=11264964216929139476): Server hosting for the blog.
+    *   [Artalk](https://github.com/ArtalkJS/Artalk): A self-hosted comment system.
+
+*   **Frontend & Design**:
+    *   [WebGL Fluid Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation): Fluid simulation effect for the homepage.
+    *   [Pace.js](https://codebyzach.github.io/pace/): Page loading animations.
+    *   [Font Awesome](https://fontawesome.com/icons?from=io): Icon library.
+    *   [Frontend Templates](https://github.com/huangshiyu13/webtemplate): A collection of web templates.
+
+*   **Image Optimization**:
+    *   [Image Engine](https://control.imageengine.io/): Image CDN with a free tier.
+    *   [Caesium](https://saerasoft.com/caesium): A local image compression tool.
+    *   [Convertio](https://convertio.co/zh/): An online image format conversion tool.
+    *   [Anime Wallpaper Site](https://bz.zzzmh.cn/index): Wallpaper and image resources.
+
+*   **Learning Resources**:
+    *   [Responsive Images Guide](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Guides/Responsive_images): MDN tutorial on responsive images.
+    *   [Image Lazy Loading](https://github.com/amandakelake/blog/issues/46): Discussion and implementation of lazy loading.
+    *   [Browser Caching Strategy](https://github.com/amandakelake/blog/issues/43): In-depth introduction to browser caching.
+    *   [CSS Sprites](https://www.w3schools.com/css/css_image_sprites.asp): W3Schools tutorial on CSS Sprites.
 
 ## 📄 License
 
