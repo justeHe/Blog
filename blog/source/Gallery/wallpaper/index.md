@@ -3,7 +3,7 @@ title: 壁纸
 date: 2025-03-07 20:27:30
 comments: false
 description: 壁纸
-top_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/1.webg
+top_img: https://fa135av3.dev.cdn.imgeng.in/blog/Images/Background/1.webp
 type: galleryGroup
 ---
 {% gallery true %}

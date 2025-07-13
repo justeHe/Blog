@@ -1,7 +1,7 @@
 ---
 title: 图像去噪(生成噪声图片)
 date: 2025-03-13 00:13:31
-tags: 图像处理，实践，理论，python，滤波器
+tags: 图像处理
 top_imag:
 comment: true
 categories:

@@ -1019,7 +1019,7 @@ instantpage: false
 lazyload:
   enable: true
   # Specify the field to use lazyload (site or post)
-  field: post, site
+  field: site
   placeholder: 
   blur: ture
 
