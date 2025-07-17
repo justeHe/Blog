@@ -1,0 +1,49 @@
+// Overrides and adjustments for icons used in the documentation page layout.
+
+// Icon styling for documentation cards.
+// This replaces the non-functional `svg` rule and correctly targets the `<i>` element.
+.doc-card-icon .icon {
+  font-size: 48px; // Set a base size for the icon container.
+  width: 1em;      // Use 1em to make the icon square based on its font-size.
+  height: 1em;
+  margin: 0;       // Remove the default auto margin to prevent centering issues.
+  fill: initial;
+}
+
+// Icon styling for the back button.
+.back-button .icon {
+  font-size: 1em; // Match the font size of the button text.
+  width: 1em;
+  height: 1em;
+  margin: 0;       // Remove the default auto margin.
+  display: inline-block; // Ensure it flows correctly with text.
+}
+
+// Brand colors for specific icons
+.doc-card-icon .icon-vue {
+  color: #4FC08D;
+}
+
+.doc-card-icon .icon-pytorch {
+  color: #EE4C2C;
+}
+
+.doc-card-icon .icon-react {
+  color: #61DAFB;
+}
+
+.doc-card-icon .icon-python {
+  color: #3776AB;
+}
+
+.doc-card-icon .icon-typescript {
+  color: #3178C6;
+}
+
+.doc-card-icon .icon-nodejs {
+  color: #339933;
+}
+
+.doc-card-icon .icon-godot {
+  color: #478CBF;
+}

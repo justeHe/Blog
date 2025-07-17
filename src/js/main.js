@@ -36,17 +36,16 @@ function getMoveDirection(startx, starty, endx, endy) {
 	const angle = getAngle(angx, angy)
 	if (angle >= -135 && angle <= -45) {
 		return DIRECTIONS.UP
-	} else if (angle > 45 && angle < 135) {
+	}
+	if (angle > 45 && angle < 135) {
 		return DIRECTIONS.DOWN
-	} else if (
-		(angle >= 135 && angle <= 180) ||
-		(angle >= -180 && angle < -135)
-	) {
+	}
+	if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
 		return DIRECTIONS.LEFT
-	} else if (angle >= -45 && angle <= 45) {
+	}
+	if (angle >= -45 && angle <= 45) {
 		return DIRECTIONS.RIGHT
 	}
-
 	return DIRECTIONS.UNDIRECTED
 }
 

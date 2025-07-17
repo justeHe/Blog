@@ -39,6 +39,11 @@
 				"href": "https://github.com/justeHe",
 				"icon": "github",
 				"text": "Github"
+			},
+			"doc": {
+				"href": "layout/doc.html",
+				"icon": "file",
+				"text": "Doc"
 			}
 		}
 	}

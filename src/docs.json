@@ -1,0 +1,51 @@
+{
+  "title": "文档中心",
+  "subtitle": "一些我常用的技术文档，以及一些我自己开源项目的文档。",
+  "searchPlaceholder": "搜索文档...",
+  "searchButton": "搜索",
+  "webSearch": "全网搜索",
+  "cards": [
+    {
+      "href": "https://cn.vuejs.org/",
+      "icon": "icon-vue",
+      "title": "Vue.js",
+      "desc": "渐进式 JavaScript 框架"
+    },
+    {
+      "href": "https://pytorch.org/",
+      "icon": "icon-pytorch",
+      "title": "PyTorch",
+      "desc": "一个开源的机器学习框架"
+    },
+    {
+      "href": "https://react.dev/",
+      "icon": "icon-react",
+      "title": "React",
+      "desc": "用于构建用户界面的 JavaScript 库"
+    },
+    {
+      "href": "https://docs.python.org/3/",
+      "icon": "icon-python",
+      "title": "Python",
+      "desc": "一种高级通用编程语言"
+    },
+    {
+      "href": "https://www.typescriptlang.org/docs/",
+      "icon": "icon-typescript",
+      "title": "TypeScript",
+      "desc": "JavaScript 的超集"
+    },
+    {
+      "href": "https://nodejs.org/en/docs",
+      "icon": "icon-nodejs",
+      "title": "Node.js",
+      "desc": "基于 Chrome V8 的 JavaScript 运行时"
+    },
+    {
+      "href": "https://docs.godotengine.org/en/stable/",
+      "icon": "icon-godot",
+      "title": "Godot",
+      "desc": "开源的 2D 与 3D 游戏引擎"
+    }
+  ]
+}

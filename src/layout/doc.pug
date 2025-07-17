@@ -1,0 +1,43 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title #{docs.title} - Juste's Website
+    link(rel="stylesheet", href="../css/doc.css")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(rel="icon" href=`${head.favicon}` type="image/x-icon")
+    link(href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet")
+  body
+    .page-wrapper
+      header.doc-header
+        .container
+          a.back-button(href="javascript:history.back()")
+            i.icon.icon-arrow-left
+            span 返回
+          h1.doc-title #{docs.title}
+          p.doc-subtitle #{docs.subtitle}
+          .doc-search-wrapper
+            input#doc-search(type="text" placeholder=docs.searchPlaceholder)
+            button#doc-search-btn(type="button") #{docs.searchButton}
+            .web-search-toggle
+              input#web-search-checkbox(type="checkbox")
+              label(for="web-search-checkbox") #{docs.webSearch}
+
+      main.doc-main-content
+        .container
+          .doc-grid
+            each card in docs.cards
+              a.doc-card(href=card.href, target="_blank")
+                .doc-card-icon
+                  i(class=`icon ${card.icon}`)
+                .doc-card-content
+                  h3.doc-card-title #{card.title}
+                  p.doc-card-desc #{card.desc}
+
+      footer.doc-footer
+        .container
+          p © Juste 2025 · Minimalist Doc Navigation
+
+    script(src="../js/doc-starfield.js")
